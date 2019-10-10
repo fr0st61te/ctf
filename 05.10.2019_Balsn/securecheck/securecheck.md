@@ -3,7 +3,9 @@
 So what we have in this ctf task - just an application which called `nosyscal` and nothing more... So let's try to open it with radare/cutter to see what's inside.
 
 ## Overview
+
 ![overview](overview.png)
+
 Just an elf64 binary with two functions which are relevant `main` and `instal_syscall_filter`. Let's see what's inside `main` with decompiler's help :
 
 ## main
@@ -42,7 +44,7 @@ undefined8 main(void)
 }
 ~~~~
 From first view seems like `shellcode` task which gets the input, put it in the mmap and runs in both processes if child successfully exit.
-Also noticed that all regs are xored also.
+Also noticed that all regs are xored also in the `main`.
 ~~~~
 0x000009f6      xor     rbx, rbx
 0x000009f9      xor     rcx, rcx
@@ -105,7 +107,9 @@ undefined8 sym.install_syscall_filter(void)
 }
 ~~~~
 `prctl` calls with some variables and all `vars_*` on stack are not relevant from radare's opinion, heh.  Those  identifiers (0x16/PR_SET_SECCOMP, 0x26/PR_SET_NO_NEW_PRIVS) points out on some `seccomp` application filtering, interesting. Need to find out then what's coming as `v3`, there is only size of `v3` is pointed out but where is the data?
+
 ![install_syscall_filter variables](stack.png)
+
 Seems like radare2 not smart enough about variables in decompile section :) What is that? Oh wait, seems like `sock_filter` structures.
 ~~~~
 {0x20, 0, 0, 4}
