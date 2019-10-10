@@ -128,8 +128,7 @@ l0: ld [4]
 l1: jeq #0xc000003e, l3, l2 
 l2: ret #0 
 l3: ld [0] 
-l4: jeq #0x3c, 
-l5, l6 
+l4: jeq #0x3c, l5, l6
 l5: ret #0x7fff0000 
 l6: jeq #0xe7, l7, l8 
 l7: ret #0x7fff0000 
