@@ -116,7 +116,7 @@ Seems like radare2 not smart enough about variables in decompile section :) What
 {0x15, 1, 0, 0xc000003e}
 {0x6, 0, 0, 0}
 {0x20, 0, 0, 0}
-{0x15, 0, 1, 0x3}
+{0x15, 0, 1, 0x3c}
 {0x6, 0, 0, 0x7fff0000}
 {0x15, 0, 1, 0xe7}
 {0x6, 0, 0, 0x7fff0000}
@@ -135,10 +135,10 @@ l6: jeq #0xe7, l7, l8
 l7: ret #0x7fff0000 
 l8: ret #0
 ~~~~
-Hm, interesting, 
-0x3e/62 - kill
-0x3c/60 - exit
-0xe7/231 - exit group
+Hm, interesting,
+ - 0x3e/62 - kill
+ - 0x3c/60 - exit
+ - 0xe7/231 - exit group
 
 So we're able to use only exit/exit group calls, otherwise we will be killed.
 What should we do in this case?
