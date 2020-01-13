@@ -10,7 +10,7 @@ A windows binary with nothing interesting. Let's try to see what's inside with C
 Actually nothing in functions, which seems suspicious. Binary contains some 'UPX' sections, probably it is packed by upx. In linux it is possible to unpack this content just with 'upx -d', here we go.
 
 ## main
-After unpacking symbols are showing us a lot of possible functions but first one need to look at main.
+After unpacking, `Cutter` showing us a lot of functions but first one need to look at main.
 ```c
 undefined4 sym._main(void)
 {
