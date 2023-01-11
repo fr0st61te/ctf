@@ -1,0 +1,12 @@
+0x2740
+
+0x1ffffc70
+
+$2 = 0x2000bee0
+$3 = 0x2000aea8
+
+aarch64-linux-gnu-gdb chal.elf  -ex "target remote 172.17.0.2:1234" -ex "b descend" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c" -ex "c"
+
+docker run -it --rm -v $PWD:$PWD -w $PWD 4cd7e576b3d5 bash
+
+
